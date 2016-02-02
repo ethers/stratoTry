@@ -37,13 +37,16 @@ var code = "contract C { int x = -2; }"; // For instance
 
 
 
-Solidity(code).call('newContract', privkey, {"value": 99}).then(function(contract) {
+Solidity(code).call('newContract', privkey, {"value": 98}).then(function(contract) {
   console.log(contract)
   console.log(contract.account)
   // console.log(Account(contract.account.address).balance)
 
   var b1;
-  Account(contract.account.address).balance.then(function(balance) {
+  var account = Account(contract.account.address);
+  console.log('addr: ' + account.address);
+
+  account.balance.then(function(balance) {
     console.log('bal: ' + balance)
     b1 = balance.equals(100); // You shouldn't use == with big-integers
   });
