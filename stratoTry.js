@@ -1,8 +1,13 @@
-var blockapps = require('blockapps-js');
+//
+// need to npm install blockapps-js and bluebird
+//
 
+var blockapps = require('blockapps-js');
 var Account = require('blockapps-js').ethbase.Account;
 var Solidity = require('blockapps-js').Solidity
 var Routes = require('blockapps-js').routes
+
+var Promise = require('bluebird');
 
 blockapps.setProfile('strato-dev');
 // blockapps.setProfile('strato-live');
@@ -24,7 +29,42 @@ var privkey = "1dd885a423f4e212740f116afa66d40aafdbb3a381079150371801871d9ea281"
 var guestBookSource = 'contract GuestBook {   mapping (address => string) entryLog;    function setEntry(string guestBookEntry) {     entryLog[msg.sender] = guestBookEntry;   }    function getMyEntry() constant returns (string) {     return entryLog[msg.sender];   } }'
 
 // deploy(guestBookSource)
-testGuestBook(guestBookSource, '3d6cda5bd55f4576c2505b8433393dd1497cf0e6')
+// testGuestBook(guestBookSource, '3d6cda5bd55f4576c2505b8433393dd1497cf0e6')
+writeGuestBook(guestBookSource, '3d6cda5bd55f4576c2505b8433393dd1497cf0e6')
+
+function writeGuestBook(code, address) {
+  Routes.solc(code).then(function(solcObj) {
+    console.log('solcObj: ')
+    console.log(solcObj)
+
+    solcObj.code = code;
+    solcObj.address = address
+
+    var contract = Solidity.attach(solcObj)
+    console.log('contract: ')
+    console.log(contract)
+
+
+    var setEntry = function(entry) {
+      return contract.state.setEntry(entry).callFrom(privkey);
+    };
+
+    var getMyEntry = function() {
+      return contract.state.getMyEntry().callFrom(privkey);
+    };
+
+    Promise.map(['testEntry'], setEntry).then(function(reply) {
+      console.log('setEntry done')
+    }).then(function() {
+      console.log('calling getMyEntry')
+
+      getMyEntry().then(function(reply) {
+        console.log('reply: ')
+        console.log(reply)
+      })
+    })
+  });
+}
 
 function testGuestBook(code, address) {
   Routes.solc(code).then(function(solcObj) {
