@@ -18,16 +18,21 @@ var privkey = "1dd885a423f4e212740f116afa66d40aafdbb3a381079150371801871d9ea281"
 
 // 9561fe5dddbe708fd329fc2bf1ab616f760795d7
 
-var code = "contract C { int x = -2; }"; // For instance
+// var code = "contract C { int x = -2; }"; // For instance
 
+// from https://github.com/Azure/azure-quickstart-templates/tree/master/go-ethereum-on-ubuntu#compiling-from-the-console
+var guestBookSource = 'contract GuestBook {   mapping (address => string) entryLog;    function setEntry(string guestBookEntry) {     entryLog[msg.sender] = guestBookEntry;   }    function getMyEntry() constant returns (string) {     return entryLog[msg.sender];   } }'
 
-function attach(code) {
+deploy(guestBookSource)
+// 3d6cda5bd55f4576c2505b8433393dd1497cf0e6
+
+function attach(code, address) {
   Routes.solc(code).then(function(solcObj) {
     console.log('solcObj: ')
     console.log(solcObj)
 
     solcObj.code = code;
-    solcObj.address = '9561fe5dddbe708fd329fc2bf1ab616f760795d7'
+    solcObj.address = address
 
     var contract = Solidity.attach(solcObj)
     console.log('contract: ')
@@ -64,7 +69,7 @@ function attach(code) {
 
 
 function deploy(code) {
-  Solidity(code).call('newContract', privkey, {"value": 98}).then(function(contract) {
+  Solidity(code).call('newContract', privkey, {"value": 97}).then(function(contract) {
     console.log(contract)
     console.log(contract.account)
     // console.log(Account(contract.account.address).balance)
