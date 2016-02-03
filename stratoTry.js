@@ -2,6 +2,7 @@ var blockapps = require('blockapps-js');
 
 var Account = require('blockapps-js').ethbase.Account;
 var Solidity = require('blockapps-js').Solidity
+var Routes = require('blockapps-js').routes
 
 blockapps.setProfile('strato-dev');
 // blockapps.setProfile('strato-live');
@@ -15,9 +16,16 @@ var privkey = "1dd885a423f4e212740f116afa66d40aafdbb3a381079150371801871d9ea281"
 // });
 
 
+// 9561fe5dddbe708fd329fc2bf1ab616f760795d7
 
 var code = "contract C { int x = -2; }"; // For instance
 
+Routes.solc(code).then(function(solcObj) {
+  console.log('solcObj: ')
+  console.log(solcObj)
+
+  
+});
 
 // Solidity(code).then(function(solObj) {
 //   console.log("vmcode: " + solObj.vmCode)
@@ -37,20 +45,20 @@ var code = "contract C { int x = -2; }"; // For instance
 
 
 
-Solidity(code).call('newContract', privkey, {"value": 98}).then(function(contract) {
-  console.log(contract)
-  console.log(contract.account)
-  // console.log(Account(contract.account.address).balance)
-
-  var b1;
-  var account = Account(contract.account.address);
-  console.log('addr: ' + account.address);
-
-  account.balance.then(function(balance) {
-    console.log('bal: ' + balance)
-    b1 = balance.equals(100); // You shouldn't use == with big-integers
-  });
-
-  var b2 = contract.state.x == -2; // If you do use ==, the big-integer is downcast.
-  console.log('results b1,b2: ' + b1 + ' ' + b2)
-});
+// Solidity(code).call('newContract', privkey, {"value": 98}).then(function(contract) {
+//   console.log(contract)
+//   console.log(contract.account)
+//   // console.log(Account(contract.account.address).balance)
+//
+//   var b1;
+//   var account = Account(contract.account.address);
+//   console.log('addr: ' + account.address);
+//
+//   account.balance.then(function(balance) {
+//     console.log('bal: ' + balance)
+//     b1 = balance.equals(100); // You shouldn't use == with big-integers
+//   });
+//
+//   var b2 = contract.state.x == -2; // If you do use ==, the big-integer is downcast.
+//   console.log('results b1,b2: ' + b1 + ' ' + b2)
+// });
