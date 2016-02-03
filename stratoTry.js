@@ -23,10 +23,10 @@ var privkey = "1dd885a423f4e212740f116afa66d40aafdbb3a381079150371801871d9ea281"
 // from https://github.com/Azure/azure-quickstart-templates/tree/master/go-ethereum-on-ubuntu#compiling-from-the-console
 var guestBookSource = 'contract GuestBook {   mapping (address => string) entryLog;    function setEntry(string guestBookEntry) {     entryLog[msg.sender] = guestBookEntry;   }    function getMyEntry() constant returns (string) {     return entryLog[msg.sender];   } }'
 
-deploy(guestBookSource)
-// 3d6cda5bd55f4576c2505b8433393dd1497cf0e6
+// deploy(guestBookSource)
+testGuestBook(guestBookSource, '3d6cda5bd55f4576c2505b8433393dd1497cf0e6')
 
-function attach(code, address) {
+function testGuestBook(code, address) {
   Routes.solc(code).then(function(solcObj) {
     console.log('solcObj: ')
     console.log(solcObj)
