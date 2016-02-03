@@ -9,7 +9,7 @@ var Routes = require('blockapps-js').routes
 
 var Promise = require('bluebird');
 
-blockapps.setProfile('strato-dev');
+blockapps.setProfile('strato-dev');  // this is actually pointing to http strato-dev2 (profiles.js was tweaked)
 // blockapps.setProfile('strato-live');
 
 var privkey = "1dd885a423f4e212740f116afa66d40aafdbb3a381079150371801871d9ea281";
@@ -46,6 +46,7 @@ function writeGuestBook(code, address) {
 
 
     var setEntry = function(entry) {
+      console.log('entry: ' + entry)
       return contract.state.setEntry(entry).callFrom(privkey);
     };
 
