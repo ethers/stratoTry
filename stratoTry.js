@@ -24,7 +24,12 @@ Routes.solc(code).then(function(solcObj) {
   console.log('solcObj: ')
   console.log(solcObj)
 
-  
+  solcObj.code = code;
+  solcObj.address = '9561fe5dddbe708fd329fc2bf1ab616f760795d7'
+
+  var contractObj = Solidity.attach(solcObj)
+  console.log('contractObj: ')
+  console.log(contractObj)
 });
 
 // Solidity(code).then(function(solObj) {
