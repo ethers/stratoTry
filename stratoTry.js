@@ -27,9 +27,18 @@ Routes.solc(code).then(function(solcObj) {
   solcObj.code = code;
   solcObj.address = '9561fe5dddbe708fd329fc2bf1ab616f760795d7'
 
-  var contractObj = Solidity.attach(solcObj)
-  console.log('contractObj: ')
-  console.log(contractObj)
+  var contract = Solidity.attach(solcObj)
+  console.log('contract: ')
+  console.log(contract)
+
+
+  var account = Account(contract.account.address);
+  console.log('addr: ' + account.address);
+
+  account.balance.then(function(balance) {
+    console.log('bal: ' + balance)
+    b1 = balance.equals(100); // You shouldn't use == with big-integers
+  });
 });
 
 // Solidity(code).then(function(solObj) {
